@@ -26,5 +26,35 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(book);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable Long id){
+        Book book = bookDB.get(id);
+        if(book == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(book);
+    }
+
+    // put: Fully update the book
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateBook(@PathVariable Long id, @RequestBody Book book){
+        Book existing = bookDB.get(id);
+        if(book == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        bookDB.put(id, book);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{id}/price")
+    public ResponseEntity<Book> updatePrice(@PathVariable Long id, @RequestBody Double newPrice){
+        Book existing = bookDB.get(id);
+        if(existing == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        existing.setPrice(newPrice);
+        return ResponseEntity.ok(existing);
+    }
+
 
 }
