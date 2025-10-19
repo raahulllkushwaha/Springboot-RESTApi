@@ -53,8 +53,18 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         existing.setPrice(newPrice);
+        bookDB.put(id, existing);
         return ResponseEntity.ok(existing);
     }
 
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Book> updatePrice(@PathVariable Long id){
+        Book existing = bookDB.remove(id);
+        if(existing == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.noContent().build();
+    }
 
 }
